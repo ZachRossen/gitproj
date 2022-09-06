@@ -17,6 +17,7 @@ public class Blob {
 		Scanner myReader = new Scanner(f);
 		String fileStr ="";
 		int count =0;
+		//makes string from file contents with enters
         while (myReader.hasNextLine()) {
         	if (count > 0) {
         		fileStr = fileStr + "\n" +myReader.nextLine();
