@@ -15,9 +15,17 @@ public class Blob {
 	String shacode;
 	public Blob (File f) throws IOException {
 		Scanner myReader = new Scanner(f);
-		String g ="";
+		String fileStr ="";
+		int count =0;
         while (myReader.hasNextLine()) {
-        	g = g + myReader.nextLine();
+        	if (count > 0) {
+        		fileStr = fileStr + "\n" +myReader.nextLine();
+        	}
+        	else {
+        		fileStr = fileStr + myReader.nextLine();
+        		count++;
+        	}
+        	
         }
         myReader.close();
 			 try {
@@ -27,7 +35,7 @@ public class Blob {
 		            // digest() method is called
 		            // to calculate message digest of the input string
 		            // returned as array of byte
-		            byte[] messageDigest = md.digest(g.getBytes());
+		            byte[] messageDigest = md.digest(fileStr.getBytes());
 		 
 		            // Convert byte array into signum representation
 		            BigInteger no = new BigInteger(1, messageDigest);
@@ -43,20 +51,8 @@ public class Blob {
 		            // return the HashText
 		            shacode = hashtext;
 		            BufferedWriter writer = new BufferedWriter(new FileWriter("C:\\Users\\swacz\\Documents\\Objects\\" + shacode));
-		            Scanner myReader1 = new Scanner(f);
-		            int c = 0;
-		            while (myReader1.hasNextLine()) {
-		            	if (c > 0) {
-		            		writer.write("\n"+myReader1.nextLine());
-		            	}
-		            	else {
-		            		writer.write(myReader1.nextLine());
-		            		c++;
-		            	}
-		            	
-		            }
-		            
-		            myReader1.close();
+		            writer.write(fileStr);
+		        
 		            writer.close();
 		        }
 		 
