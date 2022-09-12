@@ -18,6 +18,7 @@ public class Index {
 		}
 		index = new File("index.txt");
 		index.createNewFile();
+		
 		inds = new HashMap<String,String>();
 		
 	}
@@ -40,7 +41,7 @@ public class Index {
 	        writer.close();
 		}
 		else {
-			
+			System.out.print("File not in current instance");
 		}
 		
 	}
