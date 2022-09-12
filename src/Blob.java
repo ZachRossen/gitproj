@@ -14,6 +14,10 @@ public class Blob {
 
 	String shacode;
 	public Blob (File f) throws IOException {
+		File serializedDir = new File("Objects");
+		if (!serializedDir.exists()) {
+		    serializedDir.mkdir();
+		}
 		Scanner myReader = new Scanner(f);
 		String fileStr ="";
 		int count =0;
@@ -41,7 +45,7 @@ public class Blob {
 		            // Convert byte array into signum representation
 		            BigInteger no = new BigInteger(1, messageDigest);
 		 
-		            // Convert message digest into hex value
+		            // Convert message digest into hex value 
 		            String hashtext = no.toString(16);
 		 
 		            // Add preceding 0s to make it 32 bit
@@ -51,7 +55,8 @@ public class Blob {
 		 
 		            // return the HashText
 		            shacode = hashtext;
-		            BufferedWriter writer = new BufferedWriter(new FileWriter("C:\\Users\\swacz\\Documents\\Objects\\" + shacode));
+		            
+		            BufferedWriter writer = new BufferedWriter(new FileWriter(serializedDir + "\\" +shacode));
 		            writer.write(fileStr);
 		        
 		            writer.close();
@@ -66,9 +71,9 @@ public class Blob {
 	public String getSha() {
 		return shacode;
 	}
-	public static void main (String [] args) throws IOException {
-		File test = new File("\\C:\\Users\\swacz\\Documents\\SUPP DIFF.txt\\");
-		Blob b = new Blob (test);
-		System.out.print(b.getSha());
-	}
+//	public static void main (String [] args) throws IOException {
+//		File test = new File("\\C:\\Users\\swacz\\Documents\\SUPP DIFF.txt\\");
+//		Blob b = new Blob (test);
+//		System.out.print(b.getSha());
+//	}
 }
