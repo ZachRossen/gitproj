@@ -16,7 +16,8 @@ public class Index {
 		if (!serializedDir.exists()) {
 		    serializedDir.mkdir();
 		}
-		index = new File("index");
+		index = new File("index.txt");
+		index.createNewFile();
 		inds = new HashMap<String,String>();
 		
 	}
