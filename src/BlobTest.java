@@ -5,6 +5,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Scanner;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -12,12 +15,13 @@ import org.junit.jupiter.api.Test;
 
 class BlobTest {
 	private static File f;
-	
+	private static String ogContent;
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
 		f = new File ("something.txt");
 		PrintWriter writer = new PrintWriter(f);
-		writer.println("some content\nwhat's up");
+		ogContent = "some content\nwhat's up";
+		writer.println(ogContent);
 		writer.close();
 	}
 	
@@ -34,7 +38,9 @@ class BlobTest {
 	void testBlob() throws IOException {
 		Blob b = new Blob (new File("something.txt"));
 		File check = new File ("objects/c09f382894b42abb22deaef2b26ca5b008334cf7");
-		assertTrue("Blob constructor doesn't work", check.exists());
+		Path filePath = Path.of("objects/c09f382894b42abb22deaef2b26ca5b008334cf7");
+		String content = Files.readString(filePath);
+		assertTrue("Blob constructor doesn't work", check.exists()&&content.equals(ogContent));
 	}
 
 	@Test
