@@ -13,9 +13,11 @@ import org.junit.jupiter.api.Test;
 
 class IndexTest {
 	private static File f;
+	private static Index indy;
 	
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
+		indy = new Index();
 		f = new File ("something.txt");
 		PrintWriter writer = new PrintWriter(f);
 		writer.println("some content\nwhat's up");
@@ -57,7 +59,6 @@ class IndexTest {
 	
 	@Test
 	void testAdd() throws IOException {
-		Index indy = new Index();
 		File check = new File ("Objects/c09f382894b42abb22deaef2b26ca5b008334cf7");
 		File check2 = new File ("Objects/60eaad68490578f099fc5f29fbab9029561198e5");
 		File check3 = new File ("Objects/db2c0fa24afb6334ce69488262c5ba671312207a");
@@ -67,16 +68,15 @@ class IndexTest {
 		boolean exists = check.exists()&&check2.exists()&&check3.exists();
 		Path filePath = Path.of("index.txt");
 		String content = Files.readString(filePath);
-		assertTrue("Index add method doesn't work", exists&&content.contains((CharSequence)indy.inds.toString()));
+		assertTrue("Index add method doesn't work", exists&&content.contains((CharSequence)"{foo.txt=60eaad68490578f099fc5f29fbab9029561198e5, something.txt=c09f382894b42abb22deaef2b26ca5b008334cf7, foobar.txt=db2c0fa24afb6334ce69488262c5ba671312207a}"));
 	}
 	
 	@Test
 	void testRemove() throws IOException {
-		Index indy = new Index();
 		indy.removeBlob("something.txt");
 		File check = new File ("Objects/c09f382894b42abb22deaef2b26ca5b008334cf7");
 		Path filePath = Path.of("index.txt");
 		String content = Files.readString(filePath);
-		assertTrue("Index remove method doesn't work", !check.exists()&&content.contains((CharSequence)indy.inds.toString()));
+		assertTrue("Index remove method doesn't work", !check.exists()&&content.contains((CharSequence)"{foo.txt=60eaad68490578f099fc5f29fbab9029561198e5, foobar.txt=db2c0fa24afb6334ce69488262c5ba671312207a}"));
 	}
 }
