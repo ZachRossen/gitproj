@@ -33,7 +33,7 @@ public class Index {
 	}
 	public void removeBlob(String fileName) throws IOException {
 		if (inds.containsKey(fileName)) {
-			Path shadPath = Paths.get("Objects\\"+inds.get(fileName));
+			Path shadPath = Paths.get("Objects/"+inds.get(fileName));
 			inds.remove(fileName);
 			Files.deleteIfExists(shadPath);
 			BufferedWriter writer = new BufferedWriter(new FileWriter(index));

@@ -56,7 +56,7 @@ public class Blob {
 		            // return the HashText
 		            shacode = hashtext;
 		            
-		            BufferedWriter writer = new BufferedWriter(new FileWriter(serializedDir + "\\" +shacode));
+		            BufferedWriter writer = new BufferedWriter(new FileWriter(serializedDir + "/" +shacode));
 		            writer.write(fileStr);
 		        
 		            writer.close();
