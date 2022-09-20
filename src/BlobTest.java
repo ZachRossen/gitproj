@@ -30,7 +30,7 @@ class BlobTest {
 		f.delete();
 		File sha1File = new File ("objects/c09f382894b42abb22deaef2b26ca5b008334cf7");
 		sha1File.delete();
-		File objects = new File ("Objects");
+		File objects = new File ("objects");
 		objects.delete();
 	}
 	

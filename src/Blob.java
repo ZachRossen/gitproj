@@ -14,7 +14,7 @@ public class Blob {
 
 	String shacode;
 	public Blob (File f) throws IOException {
-		File serializedDir = new File("Objects");
+		File serializedDir = new File("objects");
 		if (!serializedDir.exists()) {
 		    serializedDir.mkdir();
 		}

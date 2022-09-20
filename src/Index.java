@@ -12,7 +12,7 @@ public class Index {
 	File index;
 	public Index () throws IOException {
 		
-		File serializedDir = new File("Objects");
+		File serializedDir = new File("objects");
 		if (!serializedDir.exists()) {
 		    serializedDir.mkdir();
 		}
@@ -33,7 +33,7 @@ public class Index {
 	}
 	public void removeBlob(String fileName) throws IOException {
 		if (inds.containsKey(fileName)) {
-			Path shadPath = Paths.get("Objects/"+inds.get(fileName));
+			Path shadPath = Paths.get("objects/"+inds.get(fileName));
 			inds.remove(fileName);
 			Files.deleteIfExists(shadPath);
 			BufferedWriter writer = new BufferedWriter(new FileWriter(index));

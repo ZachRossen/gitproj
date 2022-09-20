@@ -15,7 +15,7 @@ public class Tree {
 		}
 		content = content.substring(0, content.length()-1);
 		String sha1 = encrypt(content);
-		PrintWriter writer = new PrintWriter (new File ("Objects/" + sha1));
+		PrintWriter writer = new PrintWriter (new File ("objects/" + sha1));
 		writer.print(content);
 		writer.close();
 	}
@@ -33,11 +33,11 @@ public class Tree {
 		return sha1;
 	}
 	
-	public static void main (String [] args) throws FileNotFoundException {
-		ArrayList<String> test = new ArrayList<String>();
-		test.add("blob : c09f382894b42abb22deaef2b26ca5b008334cf7");
-		test.add("tree : 60eaad68490578f099fc5f29fbab9029561198e5");
-		test.add("blob : db2c0fa24afb6334ce69488262c5ba671312207a");
-		Tree testTree = new Tree(test);
-	}
+//	public static void main (String [] args) throws FileNotFoundException {
+//		ArrayList<String> test = new ArrayList<String>();
+//		test.add("blob : c09f382894b42abb22deaef2b26ca5b008334cf7");
+//		test.add("tree : 60eaad68490578f099fc5f29fbab9029561198e5");
+//		test.add("blob : db2c0fa24afb6334ce69488262c5ba671312207a");
+//		Tree testTree = new Tree(test);
+//	}
 }

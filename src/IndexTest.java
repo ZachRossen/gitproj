@@ -37,13 +37,13 @@ class IndexTest {
 		f.delete();
 		new File("foo.txt").delete();
 		new File("foobar.txt").delete();
-		File sha1File = new File ("Objects/c09f382894b42abb22deaef2b26ca5b008334cf7");
+		File sha1File = new File ("objects/c09f382894b42abb22deaef2b26ca5b008334cf7");
 		sha1File.delete();
-		File sha1File2 = new File ("Objects/60eaad68490578f099fc5f29fbab9029561198e5");
+		File sha1File2 = new File ("objects/60eaad68490578f099fc5f29fbab9029561198e5");
 		sha1File2.delete();
-		File sha1File3 = new File ("Objects/db2c0fa24afb6334ce69488262c5ba671312207a");
+		File sha1File3 = new File ("objects/db2c0fa24afb6334ce69488262c5ba671312207a");
 		sha1File3.delete();
-		File objects = new File ("Objects");
+		File objects = new File ("objects");
 		objects.delete();
 		File index = new File ("index.txt");
 		index.delete();
@@ -52,16 +52,16 @@ class IndexTest {
 	@Test
 	void testInit() throws IOException {
 		Index indy = new Index();
-		File check = new File ("Objects");
+		File check = new File ("objects");
 		File check2 = new File ("index.txt");
 		assertTrue("Index initializer doesn't work", check.exists()&&check2.exists());
 	}
 	
 	@Test
 	void testAdd() throws IOException {
-		File check = new File ("Objects/c09f382894b42abb22deaef2b26ca5b008334cf7");
-		File check2 = new File ("Objects/60eaad68490578f099fc5f29fbab9029561198e5");
-		File check3 = new File ("Objects/db2c0fa24afb6334ce69488262c5ba671312207a");
+		File check = new File ("objects/c09f382894b42abb22deaef2b26ca5b008334cf7");
+		File check2 = new File ("objects/60eaad68490578f099fc5f29fbab9029561198e5");
+		File check3 = new File ("objects/db2c0fa24afb6334ce69488262c5ba671312207a");
 		indy.addBlob("something.txt");
 		indy.addBlob("foo.txt");
 		indy.addBlob("foobar.txt");
@@ -74,7 +74,7 @@ class IndexTest {
 	@Test
 	void testRemove() throws IOException {
 		indy.removeBlob("something.txt");
-		File check = new File ("Objects/c09f382894b42abb22deaef2b26ca5b008334cf7");
+		File check = new File ("objects/c09f382894b42abb22deaef2b26ca5b008334cf7");
 		Path filePath = Path.of("index.txt");
 		String content = Files.readString(filePath);
 		assertTrue("Index remove method doesn't work", !check.exists()&&content.contains((CharSequence)"{foo.txt=60eaad68490578f099fc5f29fbab9029561198e5, foobar.txt=db2c0fa24afb6334ce69488262c5ba671312207a}"));
