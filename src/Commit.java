@@ -1,10 +1,14 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class Commit {
@@ -51,9 +55,12 @@ public class Commit {
         return hashtext;
 	}
 	public String getDate() {
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
+		LocalDateTime now = LocalDateTime.now();  
+		date =(dtf.format(now));  
 		return date;
-	}
-	public void writeNew() throws NoSuchAlgorithmException {
+	   }
+	public void writeNew() throws NoSuchAlgorithmException, IOException {
 		String s = pTree;
 		s+="\n";
 		s+=parent;
@@ -78,7 +85,15 @@ public class Commit {
         // Convert message digest into hex value 
         String hashtext = no.toString(16);
         File f = new File("objects\\"+hashtext);
+        BufferedWriter wr = new BufferedWriter(new FileWriter(f));
+		wr.write(s);
+		wr.close();
+        f.createNewFile();
 	}
 	
-	
+	public static void main(String [] args) throws NoSuchAlgorithmException, IOException {
+		Commit hi = new Commit("tree","sum","auth","prent");
+		hi.getDate();
+		hi.writeNew();
+	}
 }
