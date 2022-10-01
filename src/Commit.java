@@ -12,17 +12,20 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class Commit {
-	private String parent;
-	private String other;
+	private Commit parent;
+	private Commit child = null;
 	private Tree pTree;
 	private String author;
 	private String date;
 	private String summary;
 
-	public Commit(String summ, String auth, String prent) {
-		parent = prent;
+	public Commit(String summ, String auth, Commit prent) throws Exception {
+		if (!prent.equals(null)) {
+			parent = prent;
+		}
 		summary = summ;
 		author = auth;
+		pTree = new Tree();
 	}
 
 	public String genSha(File f) throws IOException, NoSuchAlgorithmException {
@@ -64,7 +67,7 @@ public class Commit {
 	}
 
 	public void writeNew() throws NoSuchAlgorithmException, IOException {
-		String s = pTree.;
+		String s = pTree.getSha();
 		s += "\n";
 		s += parent;
 		s += "\n";
@@ -94,8 +97,8 @@ public class Commit {
 		f.createNewFile();
 	}
 
-	public static void main(String[] args) throws NoSuchAlgorithmException, IOException {
-		Commit hi = new Commit("sum", "auth", "prent");
+	public static void main(String[] args) throws Exception {
+		Commit hi = new Commit("sum", "auth", null);
 		hi.getDate();
 		hi.writeNew();
 	}
