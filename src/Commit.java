@@ -69,9 +69,13 @@ public class Commit {
 	public void writeNew() throws NoSuchAlgorithmException, IOException {
 		String s = pTree.getSha();
 		s += "\n";
-		s += parent;
+		if (!parent.equals(null)) {
+			s += parent;
+		}
 		s += "\n";
-		s += other;
+		if (!child.equals(null)) {
+			s += child;
+		}
 		s += "\n";
 		s += author;
 		s += "\n";
@@ -97,9 +101,9 @@ public class Commit {
 		f.createNewFile();
 	}
 
-	public static void main(String[] args) throws Exception {
-		Commit hi = new Commit("sum", "auth", null);
-		hi.getDate();
-		hi.writeNew();
-	}
+//	public static void main(String[] args) throws Exception {
+//		Commit hi = new Commit("sum", "auth", null);
+//		hi.getDate();
+//		hi.writeNew();
+//	}
 }
