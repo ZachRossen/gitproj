@@ -12,7 +12,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class Commit {
-	private Commit parent;
+	private Commit parent = null;
 	private Commit child = null;
 	private Tree pTree;
 	private String author;
@@ -22,10 +22,26 @@ public class Commit {
 	public Commit(String summ, String auth, Commit prent) throws Exception {
 		if (!prent.equals(null)) {
 			parent = prent;
-		}
+			writeParent();
+			pTree = new Tree(parent.getTree(), true);
+		} else
+			pTree = new Tree(null, false);
 		summary = summ;
 		author = auth;
-		pTree = new Tree();
+	}
+
+	public Tree getTree() {
+		return pTree;
+	}
+
+	private void writeParent() throws Exception {
+		parent.setChild(this);
+		parent.writeNew();
+	}
+
+	// set next
+	public void setChild(Commit c) {
+		child = c;
 	}
 
 	public String genSha(File f) throws IOException, NoSuchAlgorithmException {
@@ -70,11 +86,11 @@ public class Commit {
 		String s = pTree.getSha();
 		s += "\n";
 		if (!parent.equals(null)) {
-			s += parent;
+			s += parent.getTree().getSha();
 		}
 		s += "\n";
 		if (!child.equals(null)) {
-			s += child;
+			s += child.getTree().getSha();
 		}
 		s += "\n";
 		s += author;

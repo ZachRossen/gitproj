@@ -1,33 +1,51 @@
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.math.BigInteger;
 import java.security.MessageDigest;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Tree {
-	String content;
+	ArrayList<String> content;
 	String sha1;
+	File index = new File("index.txt");
 
-	public Tree() throws FileNotFoundException {
-		content = "";
-		Scanner scan = new Scanner("index.txt");
+	public Tree(Tree parentTree, boolean tf) throws Exception {
+		content = new ArrayList<String>();
+		if (tf) {
+			content.add("tree : " + parentTree.getSha());
+		}
+		Scanner scan = new Scanner(index);
 		while (scan.hasNextLine()) {
 			String fileName = scan.next();
 			scan.next();
 			String sha = scan.next();
-			content += "blob : " + sha + " " + fileName;
+			content.add("blob : " + sha + " " + fileName);
 		}
 		scan.close();
-		content = content.substring(0, content.length() - 1);
-		sha1 = encrypt(content);
+		clearIndex();
+		String words = "";
+		for (String str : content) {
+			words += str + "\n";
+		}
+		words = words.substring(0, words.length() - 1);
+		sha1 = encrypt(words);
 		PrintWriter writer = new PrintWriter(new File("objects/" + sha1));
-		writer.print(content);
+		writer.print(words);
 		writer.close();
 	}
 
 	public String getSha() {
 		return sha1;
+	}
+
+	public void clearIndex() throws Exception {
+		FileWriter fw = new FileWriter(index);
+		PrintWriter pw = new PrintWriter(fw);
+		pw.write("");
+		pw.close();
+		fw.close();
 	}
 
 	private String encrypt(String fileContent) {
