@@ -19,6 +19,15 @@ public class Tree {
 		Scanner scan = new Scanner(index);
 		while (scan.hasNextLine()) {
 			String fileName = scan.next();
+			if (fileName.contains("*")) {
+				if (fileName.charAt(1) == 'd') {
+					fileName = scan.next();
+					delete(fileName);
+				} else {
+					fileName = scan.next();
+					delete(fileName);
+				}
+			}
 			scan.next();
 			String sha = scan.next();
 			content.add("blob : " + sha + " " + fileName);
@@ -34,6 +43,10 @@ public class Tree {
 		PrintWriter writer = new PrintWriter(new File("objects/" + sha1));
 		writer.print(words);
 		writer.close();
+	}
+
+	public void delete(String s) {
+
 	}
 
 	public String getSha() {
