@@ -20,7 +20,7 @@ public class Commit {
 	private String summary;
 
 	public Commit(String summ, String auth, Commit prent) throws Exception {
-		if (!prent.equals(null)) {
+		if (prent != null) {
 			parent = prent;
 			writeParent();
 			pTree = new Tree(parent.getTree(), true);

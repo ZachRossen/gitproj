@@ -18,4 +18,9 @@ public class Git {
 	public void add(String fileName) throws Exception {
 		index.addBlob(fileName);
 	}
+
+	// deletes blob
+	public void delete(String fileName) {
+
+	}
 }
