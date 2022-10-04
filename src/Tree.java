@@ -17,22 +17,35 @@ public class Tree {
 			content.add("tree : " + parentTree.getSha());
 		}
 		Scanner scan = new Scanner(index);
+		ArrayList<String> fileNames = new ArrayList<String>();
+		int count = 0;
 		while (scan.hasNextLine()) {
-			String fileName = scan.next();
-			if (fileName.contains("*")) {
-				if (fileName.charAt(1) == 'd') {
+			String pretext = scan.next();
+			String fileName = pretext;
+			if (pretext.contains("*")) {
+				if (pretext.charAt(1) == 'd') {
 					fileName = scan.next();
-					delete(fileName);
+					fileNames.add(fileName);
+					content.add(pretext + " " + fileName);
+					count++;
 				} else {
 					fileName = scan.next();
-					delete(fileName);
+					fileNames.add(fileName);
+					scan.next();
+					String sha = scan.next();
+					content.add(pretext + sha + " " + fileName);
+					count++;
 				}
+			} else {
+				scan.next();
+				String sha = scan.next();
+				content.add("blob : " + sha + " " + fileName);
 			}
-			scan.next();
-			String sha = scan.next();
-			content.add("blob : " + sha + " " + fileName);
 		}
 		scan.close();
+		if (count > 0) {
+			getContents(fileNames, parentTree, parentTree != null);
+		}
 		clearIndex();
 		String words = "";
 		for (String str : content) {
@@ -45,8 +58,22 @@ public class Tree {
 		writer.close();
 	}
 
-	public void delete(String s) {
+	public void getContents(ArrayList<String> fileNames, Tree p, boolean tf) {
+		for (String s : getContent()) {
+			int count = 0;
+			for (String str : fileNames) {
+				if (s.contains(str)) {
+					count++;
+				}
+			}
+			if (count == 0) {
+				content.add(s);
+			}
+		}
+	}
 
+	public ArrayList<String> getContent() {
+		return content;
 	}
 
 	public String getSha() {

@@ -85,11 +85,11 @@ public class Commit {
 	public void writeNew() throws NoSuchAlgorithmException, IOException {
 		String s = pTree.getSha();
 		s += "\n";
-		if (!parent.equals(null)) {
+		if (parent != null) {
 			s += parent.getTree().getSha();
 		}
 		s += "\n";
-		if (!child.equals(null)) {
+		if (child != null) {
 			s += child.getTree().getSha();
 		}
 		s += "\n";
