@@ -23,7 +23,7 @@ public class Commit {
 		if (prent != null) {
 			parent = prent;
 			writeParent();
-			pTree = new Tree(parent.getTree(), true);
+			pTree = new Tree(prent, true);
 		} else
 			pTree = new Tree(null, false);
 		summary = summ;
@@ -32,6 +32,14 @@ public class Commit {
 
 	public Tree getTree() {
 		return pTree;
+	}
+
+	public Commit getParent() {
+		return parent;
+	}
+
+	public Tree getParentTree() {
+		return parent.getTree();
 	}
 
 	private void writeParent() throws Exception {

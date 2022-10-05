@@ -11,10 +11,10 @@ public class Tree {
 	String sha1;
 	File index = new File("index.txt");
 
-	public Tree(Tree parentTree, boolean tf) throws Exception {
+	public Tree(Commit parent, boolean tf) throws Exception {
 		content = new ArrayList<String>();
 		if (tf) {
-			content.add("tree : " + parentTree.getSha());
+			content.add("tree : " + parent.getTree().getSha());
 		}
 		Scanner scan = new Scanner(index);
 		ArrayList<String> fileNames = new ArrayList<String>();
@@ -44,7 +44,7 @@ public class Tree {
 		}
 		scan.close();
 		if (count > 0) {
-			getContents(fileNames, parentTree, parentTree != null);
+			getContents(fileNames, parent, parent.getTree() != null);
 		}
 		clearIndex();
 		String words = "";
@@ -58,17 +58,20 @@ public class Tree {
 		writer.close();
 	}
 
-	public void getContents(ArrayList<String> fileNames, Tree p, boolean tf) {
-		for (String s : getContent()) {
-			int count = 0;
-			for (String str : fileNames) {
-				if (s.contains(str)) {
-					count++;
+	public void getContents(ArrayList<String> fileNames, Commit p, boolean tf) {
+		if (tf) {
+			for (String s : p.getTree().getContent()) {
+				int count = 0;
+				for (String str : fileNames) {
+					if (s.contains(str)) {
+						count++;
+					}
+				}
+				if (count == 0) {
+					content.add(s);
 				}
 			}
-			if (count == 0) {
-				content.add(s);
-			}
+			getContents(fileNames, p.getParent(), p.getParent().getTree() != null);
 		}
 	}
 
