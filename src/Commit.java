@@ -1,7 +1,5 @@
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigInteger;
@@ -9,11 +7,11 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 
 public class Commit {
 	private Commit parent = null;
 	private Commit child = null;
+	public String sha = null;
 	private Tree pTree;
 	private String author;
 	private String date;
@@ -28,6 +26,7 @@ public class Commit {
 			pTree = new Tree(null, false);
 		summary = summ;
 		author = auth;
+		sha = encryptThisString(getContent());
 	}
 
 	public Tree getTree() {
@@ -52,35 +51,36 @@ public class Commit {
 		child = c;
 	}
 
-	public String genSha(File f) throws IOException, NoSuchAlgorithmException {
-		BufferedReader r = new BufferedReader(new FileReader(f));
-		ArrayList<String> strs = new ArrayList<String>();
-		while (r.ready()) {
-			strs.add(r.readLine());
+	// SHA1 method
+	private String encryptThisString(String input) {
+		try {
+			// getInstance() method is called with algorithm SHA-1
+			MessageDigest md = MessageDigest.getInstance("SHA-1");
 
-		}
-		r.close();
-		String s = "";
-		for (int i = 0; i < 4; i++) {
-			if (strs.size() > i) {
-				s += strs.get(strs.size() - i);
+			// digest() method is called
+			// to calculate message digest of the input string
+			// returned as array of byte
+			byte[] messageDigest = md.digest(input.getBytes());
+
+			// Convert byte array into signum representation
+			BigInteger no = new BigInteger(1, messageDigest);
+
+			// Convert message digest into hex value
+			String hashtext = no.toString(16);
+
+			// Add preceding 0s to make it 32 bit
+			while (hashtext.length() < 32) {
+				hashtext = "0" + hashtext;
 			}
 
+			// return the HashText
+			return hashtext;
 		}
-		date = strs.get(strs.size() - 1);
-		MessageDigest md = MessageDigest.getInstance("SHA-1");
 
-		// digest() method is called
-		// to calculate message digest of the input string
-		// returned as array of byte
-		byte[] messageDigest = md.digest(s.getBytes());
-
-		// Convert byte array into signum representation
-		BigInteger no = new BigInteger(1, messageDigest);
-
-		// Convert message digest into hex value
-		String hashtext = no.toString(16);
-		return hashtext;
+		// For specifying wrong message digest algorithms
+		catch (NoSuchAlgorithmException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	public String getDate() {
@@ -90,17 +90,30 @@ public class Commit {
 		return date;
 	}
 
+	public String getContent() {
+		String s = pTree.getSha();
+		s += "\n";
+		s += author;
+		s += "\n";
+		s += date;
+		s += "\n";
+		s += summary;
+		return s;
+	}
+
+	public String getSha() {
+		return sha;
+	}
+
 	public void writeNew() throws NoSuchAlgorithmException, IOException {
 		String s = pTree.getSha();
 		s += "\n";
 		if (parent != null) {
-			if (parent.getTree() != null)
-				s += parent.getTree().getSha();
+			parent.getSha();
 		}
 		s += "\n";
 		if (child != null) {
-			if (child.getTree() != null)
-				s += child.getTree().getSha();
+			child.getSha();
 		}
 		s += "\n";
 		s += author;
@@ -108,19 +121,8 @@ public class Commit {
 		s += date;
 		s += "\n";
 		s += summary;
-		MessageDigest md = MessageDigest.getInstance("SHA-1");
 
-		// digest() method is called
-		// to calculate message digest of the input string
-		// returned as array of byte
-		byte[] messageDigest = md.digest(s.getBytes());
-
-		// Convert byte array into signum representation
-		BigInteger no = new BigInteger(1, messageDigest);
-
-		// Convert message digest into hex value
-		String hashtext = no.toString(16);
-		File f = new File("objects\\" + hashtext);
+		File f = new File("objects\\" + sha);
 		BufferedWriter wr = new BufferedWriter(new FileWriter(f));
 		wr.write(s);
 		wr.close();
