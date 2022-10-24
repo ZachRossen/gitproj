@@ -19,7 +19,7 @@ public class Tree {
 		Scanner scan = new Scanner(index);
 		ArrayList<String> fileNames = new ArrayList<String>();
 		int count = 0;
-		while (scan.hasNextLine()) {
+		while (scan.hasNextLine() && scan.hasNext()) {
 			String pretext = scan.next();
 			String fileName = pretext;
 			if (pretext.contains("*")) {

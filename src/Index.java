@@ -34,6 +34,7 @@ public class Index {
 		BufferedWriter writer = new BufferedWriter(new FileWriter(index));
 		for (String s : keys) {
 			writer.append(s + " : " + inds.get(s));
+			writer.newLine();
 		}
 		writer.close();
 	}

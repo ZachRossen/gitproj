@@ -94,11 +94,13 @@ public class Commit {
 		String s = pTree.getSha();
 		s += "\n";
 		if (parent != null) {
-			s += parent.getTree().getSha();
+			if (parent.getTree() != null)
+				s += parent.getTree().getSha();
 		}
 		s += "\n";
 		if (child != null) {
-			s += child.getTree().getSha();
+			if (child.getTree() != null)
+				s += child.getTree().getSha();
 		}
 		s += "\n";
 		s += author;
