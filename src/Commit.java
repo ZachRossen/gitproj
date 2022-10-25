@@ -21,13 +21,15 @@ public class Commit {
 		getDate();
 		if (prent != null) {
 			parent = prent;
-			writeParent();
 			pTree = new Tree(prent, true);
 		} else
 			pTree = new Tree(null, false);
 		summary = summ;
 		author = auth;
 		sha = encryptThisString(getContent());
+		if (prent != null)
+			writeParent();
+		writeNew();
 	}
 
 	public Tree getTree() {
