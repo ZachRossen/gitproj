@@ -18,6 +18,7 @@ public class Commit {
 	private String summary;
 
 	public Commit(String summ, String auth, Commit prent) throws Exception {
+		getDate();
 		if (prent != null) {
 			parent = prent;
 			writeParent();
@@ -83,11 +84,10 @@ public class Commit {
 		}
 	}
 
-	public String getDate() {
+	public void getDate() {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 		LocalDateTime now = LocalDateTime.now();
 		date = (dtf.format(now));
-		return date;
 	}
 
 	public String getContent() {
@@ -109,11 +109,11 @@ public class Commit {
 		String s = pTree.getSha();
 		s += "\n";
 		if (parent != null) {
-			parent.getSha();
+			s += parent.getSha();
 		}
 		s += "\n";
 		if (child != null) {
-			child.getSha();
+			s += child.getSha();
 		}
 		s += "\n";
 		s += author;
